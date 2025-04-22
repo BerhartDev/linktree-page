@@ -29,8 +29,8 @@ Uma página de links estilo Linktree para a BEKNO, otimizada para mobile e com d
 ## Personalização
 
 ### Imagem de Perfil
-1. Coloque sua imagem de perfil na pasta `images/`
-2. Renomeie a imagem para `profile.jpg` ou atualize o caminho no arquivo `index.html`
+1. Coloque sua imagem de perfil na pasta `public/`
+2. Renomeie a imagem para `profile.jpg`
 3. A imagem deve ser quadrada e ter pelo menos 140x140 pixels
 4. Formatos suportados: JPG, PNG, WebP
 
