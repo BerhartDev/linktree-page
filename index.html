@@ -3,68 +3,295 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BEKNO - Links</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Bernardo Knoblauch · Links</title>
+    <meta name="description" content="Links de Bernardo Knoblauch, desenvolvedor Node.js full stack no Rio de Janeiro.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #0b0b0b;
+            --fg: #ededed;
+            --muted: #a1a1a1;
+            --line: #2b2b2b;
+            --font-sans: "Schibsted Grotesk", system-ui, sans-serif;
+            --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.5rem;
+            --space-6: 2rem;
+            --space-7: 3rem;
+            --space-8: 4.5rem;
+            --ease: cubic-bezier(0.2, 0, 0, 1);
+            --dur-fast: 120ms;
+            --dur: 220ms;
+            color-scheme: dark;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            border-radius: 0;
+        }
+
+        html {
+            height: 100%;
+            -webkit-text-size-adjust: 100%;
+        }
+
         body {
-            background-color: #000000;
-            color: #FFFFFF;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            line-height: 1.4;
+            -webkit-font-smoothing: antialiased;
         }
-        .profile-image {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
+
+        h1,
+        p,
+        ul {
+            margin: 0;
+        }
+
+        ul {
+            padding: 0;
+            list-style: none;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--fg);
+            outline-offset: 3px;
+        }
+
+        ::selection {
+            background: var(--fg);
+            color: var(--bg);
+        }
+
+        .page {
+            width: min(32rem, 100%);
+            min-height: 0;
+            margin-inline: auto;
+            padding: clamp(1.25rem, 4dvh, 2.5rem) clamp(1.25rem, 4vw, 2rem) clamp(0.65rem, 2dvh, 1.5rem);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .photo {
+            position: relative;
+            align-self: flex-start;
+            flex: none;
+            height: clamp(5rem, 13.5dvh, 8rem);
+            width: auto;
+            aspect-ratio: 3 / 4;
+            overflow: hidden;
+            margin-bottom: 0;
+            pointer-events: none;
+        }
+
+        .photo img {
+            display: block;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
+            object-position: 50% 18%;
+            filter: grayscale(1);
         }
-        .link-button {
-            transition: all 0.3s ease;
+
+        .photo::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: var(--bg);
+            opacity: 0.35;
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='3' height='3'%3E%3Crect width='3' height='1'/%3E%3C/svg%3E");
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='3' height='3'%3E%3Crect width='3' height='1'/%3E%3C/svg%3E");
         }
-        .link-button:hover {
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+
+        .intro {
+            margin-bottom: clamp(0.85rem, 2dvh, 1.35rem);
+        }
+
+        .name {
+            position: relative;
+            z-index: 1;
+            margin-top: -0.65em;
+            font-size: clamp(1.85rem, 4.2dvh, 2.65rem);
+            font-weight: 700;
+            line-height: 1.02;
+            letter-spacing: -0.035em;
+            max-width: 12ch;
+        }
+
+        .social {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-2);
+            margin-bottom: clamp(0.75rem, 2.2dvh, 2rem);
+        }
+
+        .social a {
+            display: grid;
+            place-items: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border: 1px solid var(--line);
+            color: var(--fg);
+            transition:
+                background-color var(--dur-fast) var(--ease),
+                color var(--dur-fast) var(--ease),
+                border-color var(--dur-fast) var(--ease),
+                transform var(--dur) var(--ease);
+        }
+
+        .social a:hover,
+        .social a:focus-visible {
+            background: var(--fg);
+            color: var(--bg);
+            border-color: var(--fg);
             transform: translateY(-2px);
+        }
+
+        .social svg {
+            width: 1.125rem;
+            height: 1.125rem;
+        }
+
+        .links {
+            border-bottom: 1px solid var(--line);
+        }
+
+        .links a {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 0.15rem var(--space-4);
+            align-items: center;
+            padding-block: clamp(0.5rem, 1.25dvh, 0.85rem);
+            border-top: 1px solid var(--line);
+        }
+
+        .links .label {
+            font-size: clamp(1.05rem, 2.4dvh, 1.25rem);
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+        }
+
+        .links .hint {
+            grid-column: 1;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        .links .arrow {
+            grid-row: 1 / span 2;
+            grid-column: 2;
+            font-family: var(--font-mono);
+            transition: transform var(--dur) var(--ease);
+        }
+
+        .links a:hover .arrow,
+        .links a:focus-visible .arrow {
+            transform: translateX(6px);
+        }
+
+        .footer {
+            width: min(32rem, 100%);
+            margin-inline: auto;
+            padding: clamp(0.7rem, 1.8dvh, 1rem) clamp(1.25rem, 4vw, 1.75rem) clamp(0.85rem, 2dvh, 1.15rem);
+            border-top: 1px solid var(--line);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+            }
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center">
-    <div class="container mx-auto my-8 px-10 py-8 flex flex-col items-center">
-        <!-- Profile Image -->
-        <img 
-            src="profile.jpg" 
-            alt="BEKNO Profile" 
-            class="profile-image mt-10 mb-4"
-        >
-        
-        <!-- Name -->
-        <h1 class="text-xl font-medium mb-8">Bernardo Knoblauch</h1>
-        
-        <!-- Links -->
-        <div class="w-full max-w-md space-y-7">
-            <a href="https://berhartdev.github.io/bekno-landing-page/" 
-               class="link-button block w-full text-center py-3 px-6 border-2 border-white rounded-full text-white hover:bg-white/10">
-                EMPRESA
-            </a>
-            
-            <a href="https://www.linkedin.com/in/bernardoknoblauch/" 
-               class="link-button block w-full text-center py-3 px-6 border-2 border-white rounded-full text-white hover:bg-white/10">
-                LINKEDIN
-            </a>
-
-            <a href="https://github.com/BerhartDev" 
-               class="link-button block w-full text-center py-3 px-6 border-2 border-white rounded-full text-white hover:bg-white/10">
-                GITHUB
-            </a>
-            
-            <a href="https://wa.me/330769645670?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20a%20BEKNO" 
-               class="link-button block w-full text-center py-3 px-6 border-2 border-white rounded-full text-white hover:bg-white/10">
-                CONTATO
-            </a>
+<body>
+    <main class="page">
+        <div class="photo">
+            <img
+                src="profile/bernardo-1086.webp"
+                srcset="profile/bernardo-640.webp 640w, profile/bernardo-1086.webp 1086w"
+                sizes="7.5rem"
+                width="1086"
+                height="1448"
+                alt="Foto de Bernardo Knoblauch em preto e branco."
+                fetchpriority="high"
+                decoding="async"
+            >
         </div>
-    </div>
 
-    <!-- Footer -->
-    <footer class="w-full text-center py-6 text-sm text-gray-400">
-        Created by BEKNO 2023
-    </footer>
+        <div class="intro">
+            <h1 class="name">Bernardo Knoblauch</h1>
+        </div>
+
+        <ul class="social" aria-label="Perfis">
+            <li>
+                <a href="https://www.linkedin.com/in/bernardoknoblauch/" rel="me noopener" aria-label="LinkedIn" title="LinkedIn">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/BerhartDev" rel="me noopener" aria-label="GitHub" title="GitHub">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                </a>
+            </li>
+        </ul>
+
+        <nav class="links" aria-label="Links">
+            <a href="https://beknodev.vercel.app/" rel="noopener">
+                <span class="label">Portfólio</span>
+                <span class="hint">Projetos e trajetória</span>
+                <span class="arrow" aria-hidden="true">→</span>
+            </a>
+            <a href="https://beknologia.up.railway.app/pt-BR" rel="noopener">
+                <span class="label">Blog</span>
+                <span class="hint">/bek.no.lo.ˈʒi.a/</span>
+                <span class="arrow" aria-hidden="true">→</span>
+            </a>
+            <a href="https://berhartdev.github.io/bekno-landing-page/pt/" rel="noopener">
+                <span class="label">Bekno &amp; Co.</span>
+                <span class="hint">Para o trabalho que você precisa feito</span>
+                <span class="arrow" aria-hidden="true">→</span>
+            </a>
+            <a href="https://vamosmarcar.com" rel="noopener">
+                <span class="label">VamosMarcar</span>
+                <span class="hint">Agendamento para barbearias e salões</span>
+                <span class="arrow" aria-hidden="true">→</span>
+            </a>
+            <a href="https://wa.me/5522988071682?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20seus%20servi%C3%A7os." rel="noopener">
+                <span class="label">Contato</span>
+                <span class="hint">WhatsApp</span>
+                <span class="arrow" aria-hidden="true">→</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="footer">© 2026 Bernardo Knoblauch</footer>
 </body>
-</html> 
+</html>
