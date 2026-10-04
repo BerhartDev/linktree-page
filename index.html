@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bernardo Knoblauch · Links</title>
-    <meta name="description" content="Links de Bernardo Knoblauch, desenvolvedor Node.js full stack no Rio de Janeiro.">
+    <meta name="description" data-i18n-content="description" content="Links de Bernardo Knoblauch, desenvolvedor Node.js full stack no Rio de Janeiro.">
+    <script>try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
@@ -27,7 +28,17 @@
             --ease: cubic-bezier(0.2, 0, 0, 1);
             --dur-fast: 120ms;
             --dur: 220ms;
+            --control-h: 2.5rem;
             color-scheme: dark;
+        }
+
+        /* Escuro por padrão, independente do sistema; claro só com data-theme="light". */
+        :root[data-theme="light"] {
+            --bg: #fafafa;
+            --fg: #0a0a0a;
+            --muted: #5e5e5e;
+            --line: #d9d9d9;
+            color-scheme: light;
         }
 
         *,
@@ -71,6 +82,25 @@
         a {
             color: inherit;
             text-decoration: none;
+        }
+
+        button {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            background: none;
+            color: inherit;
+            font: inherit;
+            cursor: pointer;
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            white-space: nowrap;
         }
 
         :focus-visible {
@@ -126,7 +156,7 @@
         }
 
         .intro {
-            margin-bottom: clamp(0.85rem, 2dvh, 1.35rem);
+            margin-bottom: clamp(0.75rem, 1.8dvh, 1.15rem);
         }
 
         .name {
@@ -140,11 +170,19 @@
             max-width: 12ch;
         }
 
+        /* No claro, o nome escuro sobre a foto perde contraste: cada linha ganha fundo da página. */
+        :root[data-theme="light"] .name span {
+            padding: 0.04em 0.18em 0.06em 0;
+            background: var(--bg);
+            -webkit-box-decoration-break: clone;
+            box-decoration-break: clone;
+        }
+
         .social {
             display: flex;
             flex-wrap: wrap;
             gap: var(--space-2);
-            margin-bottom: clamp(0.75rem, 2.2dvh, 2rem);
+            margin-bottom: clamp(0.65rem, 1.8dvh, 1.5rem);
         }
 
         .social a {
@@ -222,6 +260,184 @@
             color: var(--muted);
         }
 
+        /* Foto à esquerda, idioma e tema à direita. */
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: var(--space-4);
+        }
+
+        .controls {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            gap: var(--space-2);
+        }
+
+        .switcher {
+            position: relative;
+        }
+
+        .switcher summary {
+            display: inline-flex;
+            gap: var(--space-2);
+            align-items: center;
+            height: var(--control-h);
+            padding-inline: var(--space-3);
+            border: 1px solid var(--line);
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            cursor: pointer;
+            list-style: none;
+            transition:
+                background-color var(--dur-fast) var(--ease),
+                color var(--dur-fast) var(--ease),
+                border-color var(--dur-fast) var(--ease);
+        }
+
+        .switcher summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .switcher summary:hover,
+        .switcher[open] summary {
+            background: var(--fg);
+            color: var(--bg);
+            border-color: var(--fg);
+        }
+
+        .chevron {
+            transition: transform var(--dur) var(--ease);
+        }
+
+        .switcher[open] .chevron {
+            transform: rotate(180deg);
+        }
+
+        .switcher ul {
+            position: absolute;
+            top: calc(100% + var(--space-2));
+            right: 0;
+            z-index: 20;
+            min-width: 11rem;
+            background: var(--bg);
+            border: 1px solid var(--fg);
+        }
+
+        .switcher li + li {
+            border-top: 1px solid var(--line);
+        }
+
+        .switcher li button {
+            display: flex;
+            gap: var(--space-3);
+            align-items: baseline;
+            width: 100%;
+            padding: var(--space-2) var(--space-3);
+            font-size: 0.875rem;
+            text-align: left;
+            transition:
+                background-color var(--dur-fast) var(--ease),
+                color var(--dur-fast) var(--ease);
+        }
+
+        .switcher .code {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        .switcher li button:hover,
+        .switcher li button:focus-visible,
+        .switcher li button[aria-current="true"] {
+            background: var(--fg);
+            color: var(--bg);
+            outline-offset: -2px;
+        }
+
+        .switcher li button:is(:hover, :focus-visible, [aria-current="true"]) .code {
+            color: inherit;
+        }
+
+        /* Ícone do tema atual: lua no escuro, bolinha cheia no claro. */
+        .theme {
+            display: grid;
+            place-items: center;
+            width: var(--control-h);
+            height: var(--control-h);
+            border: 1px solid var(--line);
+            color: var(--fg);
+            transition:
+                background-color var(--dur-fast) var(--ease),
+                color var(--dur-fast) var(--ease),
+                border-color var(--dur-fast) var(--ease);
+        }
+
+        .theme:hover,
+        .theme:focus-visible {
+            background: var(--fg);
+            color: var(--bg);
+            border-color: var(--fg);
+        }
+
+        .theme svg {
+            grid-area: 1 / 1;
+            transition: transform var(--dur) var(--ease);
+        }
+
+        .theme:hover svg {
+            transform: rotate(-20deg);
+        }
+
+        .theme .sun,
+        :root[data-theme="light"] .theme .moon {
+            display: none;
+        }
+
+        :root[data-theme="light"] .theme .sun {
+            display: block;
+        }
+
+        /* CTA: borda de 1px, inverte no hover e a seta anda. */
+        .cta {
+            display: inline-flex;
+            gap: var(--space-3);
+            align-items: center;
+            align-self: flex-start;
+            height: var(--control-h);
+            padding-inline: var(--space-4);
+            margin-bottom: clamp(0.75rem, 2dvh, 1.5rem);
+            border: 1px solid var(--fg);
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            white-space: nowrap;
+            transition:
+                background-color var(--dur-fast) var(--ease),
+                color var(--dur-fast) var(--ease);
+        }
+
+        .cta:hover,
+        .cta:focus-visible {
+            background: var(--fg);
+            color: var(--bg);
+        }
+
+        .cta svg {
+            width: 1rem;
+            height: 1rem;
+            flex: none;
+        }
+
+        .cta .arrow {
+            transition: transform var(--dur) var(--ease);
+        }
+
+        .cta:hover .arrow,
+        .cta:focus-visible .arrow {
+            transform: translateX(4px);
+        }
+
         @media (prefers-reduced-motion: reduce) {
             *,
             *::before,
@@ -233,29 +449,54 @@
 </head>
 <body>
     <main class="page">
-        <div class="photo">
-            <img
-                src="profile/bernardo-1086.webp"
-                srcset="profile/bernardo-640.webp 640w, profile/bernardo-1086.webp 1086w"
-                sizes="7.5rem"
-                width="1086"
-                height="1448"
-                alt="Foto de Bernardo Knoblauch em preto e branco."
-                fetchpriority="high"
-                decoding="async"
-            >
+        <div class="top">
+            <div class="photo">
+                <img
+                    src="profile/bernardo-1086.webp"
+                    srcset="profile/bernardo-640.webp 640w, profile/bernardo-1086.webp 1086w"
+                    sizes="7.5rem"
+                    width="1086"
+                    height="1448"
+                    alt="Foto de Bernardo Knoblauch em preto e branco."
+                    data-i18n-alt="photoAlt"
+                    fetchpriority="high"
+                    decoding="async"
+                >
+            </div>
+
+            <div class="controls">
+                <details class="switcher">
+                    <summary>
+                        <span class="visually-hidden"><span data-i18n="language">Idioma</span>: <span data-i18n="localeName">Português</span></span>
+                        <span class="current" aria-hidden="true">PT</span>
+                        <span class="chevron" aria-hidden="true">↓</span>
+                    </summary>
+                    <ul>
+                        <li><button type="button" data-locale="pt" lang="pt" aria-current="true"><span class="code">PT</span>Português</button></li>
+                        <li><button type="button" data-locale="en" lang="en"><span class="code">EN</span>English</button></li>
+                        <li><button type="button" data-locale="fr" lang="fr"><span class="code">FR</span>Français</button></li>
+                        <li><button type="button" data-locale="es" lang="es"><span class="code">ES</span>Español</button></li>
+                    </ul>
+                </details>
+                <button type="button" class="theme" aria-pressed="true">
+                    <span class="visually-hidden" data-i18n="theme">Escuro</span>
+                    <svg class="moon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M10.5 1.2A7 7 0 1 0 14.8 11 5.6 5.6 0 0 1 10.5 1.2Z" fill="currentColor"/></svg>
+                    <svg class="sun" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="currentColor"/></svg>
+                </button>
+            </div>
         </div>
 
         <div class="intro">
-            <h1 class="name">Bernardo Knoblauch</h1>
+            <h1 class="name"><span>Bernardo Knoblauch</span></h1>
         </div>
 
-        <ul class="social" aria-label="Perfis">
-            <li>
-                <a href="https://www.linkedin.com/in/bernardoknoblauch/" rel="me noopener" aria-label="LinkedIn" title="LinkedIn">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                </a>
-            </li>
+        <a class="cta" href="https://wa.me/5521973692691?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20seus%20servi%C3%A7os." data-i18n-href="whatsapp" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            <span data-i18n="cta">Entrar em contato</span>
+            <span class="arrow" aria-hidden="true">→</span>
+        </a>
+
+        <ul class="social" aria-label="Perfis" data-i18n-aria-label="profiles">
             <li>
                 <a href="https://github.com/BerhartDev" rel="me noopener" aria-label="GitHub" title="GitHub">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
@@ -268,10 +509,10 @@
             </li>
         </ul>
 
-        <nav class="links" aria-label="Links">
-            <a href="https://bernardoknoblauch.com" rel="noopener">
-                <span class="label">Portfólio</span>
-                <span class="hint">Projetos e trajetória</span>
+        <nav class="links" aria-label="Links" data-i18n-aria-label="links">
+            <a href="https://bernardoknoblauch.com/pt/" data-i18n-href="portfolioUrl" rel="noopener">
+                <span class="label" data-i18n="portfolio">Portfólio</span>
+                <span class="hint" data-i18n="portfolioHint">Projetos e trajetória</span>
                 <span class="arrow" aria-hidden="true">→</span>
             </a>
             <a href="https://beknologia.com" rel="noopener">
@@ -281,22 +522,171 @@
             </a>
             <a href="https://bekno.com.br" rel="noopener">
                 <span class="label">Bekno &amp; Co.</span>
-                <span class="hint">Para o trabalho que você precisa feito</span>
+                <span class="hint" data-i18n="beknoHint">Para o trabalho que você precisa feito</span>
                 <span class="arrow" aria-hidden="true">→</span>
             </a>
             <a href="https://vamosmarcar.com" rel="noopener">
                 <span class="label">VamosMarcar</span>
-                <span class="hint">Agendamento para barbearias e salões</span>
+                <span class="hint" data-i18n="vamosmarcarHint">Agendamento para barbearias e salões</span>
                 <span class="arrow" aria-hidden="true">→</span>
             </a>
-            <a href="https://wa.me/5521973692691?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20seus%20servi%C3%A7os." rel="noopener">
-                <span class="label">Contato</span>
-                <span class="hint">WhatsApp</span>
+            <a href="https://www.linkedin.com/in/bernardoknoblauch/" rel="me noopener">
+                <span class="label">LinkedIn</span>
+                <span class="hint" data-i18n="linkedinHint">Trajetória profissional</span>
                 <span class="arrow" aria-hidden="true">→</span>
             </a>
         </nav>
     </main>
 
-    <footer class="footer">© 2026 Bernardo Knoblauch</footer>
+    <footer class="footer">© 2022 BEKNO</footer>
+
+    <script>
+        (function () {
+            var WHATSAPP = "https://wa.me/5521973692691?text=";
+            var LOCALES = ["pt", "en", "fr", "es"];
+            var NAMES = { pt: "Português", en: "English", fr: "Français", es: "Español" };
+            var HTML_LANG = { pt: "pt-BR", en: "en", fr: "fr", es: "es" };
+            var MESSAGES = {
+                pt: {
+                    title: "Bernardo Knoblauch · Links",
+                    description: "Links de Bernardo Knoblauch, desenvolvedor Node.js full stack no Rio de Janeiro.",
+                    photoAlt: "Foto de Bernardo Knoblauch em preto e branco.",
+                    language: "Idioma",
+                    theme: "Escuro",
+                    cta: "Entrar em contato",
+                    whatsapp: "Olá, gostaria de saber mais sobre seus serviços.",
+                    profiles: "Perfis",
+                    links: "Links",
+                    portfolio: "Portfólio",
+                    portfolioHint: "Projetos e trajetória",
+                    beknoHint: "Para o trabalho que você precisa feito",
+                    vamosmarcarHint: "Agendamento para barbearias e salões",
+                    linkedinHint: "Trajetória profissional"
+                },
+                en: {
+                    title: "Bernardo Knoblauch · Links",
+                    description: "Links from Bernardo Knoblauch, full stack Node.js developer in Rio de Janeiro.",
+                    photoAlt: "Black and white photo of Bernardo Knoblauch.",
+                    language: "Language",
+                    theme: "Dark",
+                    cta: "Get in touch",
+                    whatsapp: "Hi, I'd like to know more about your services.",
+                    profiles: "Profiles",
+                    links: "Links",
+                    portfolio: "Portfolio",
+                    portfolioHint: "Projects and background",
+                    beknoHint: "For the work you need done",
+                    vamosmarcarHint: "Booking for barbershops and salons",
+                    linkedinHint: "Professional background"
+                },
+                fr: {
+                    title: "Bernardo Knoblauch · Liens",
+                    description: "Liens de Bernardo Knoblauch, développeur full stack Node.js à Rio de Janeiro.",
+                    photoAlt: "Photo en noir et blanc de Bernardo Knoblauch.",
+                    language: "Langue",
+                    theme: "Sombre",
+                    cta: "Me contacter",
+                    whatsapp: "Bonjour, j'aimerais en savoir plus sur vos services.",
+                    profiles: "Profils",
+                    links: "Liens",
+                    portfolio: "Portfolio",
+                    portfolioHint: "Projets et parcours",
+                    beknoHint: "Pour le travail que vous voulez voir fait",
+                    vamosmarcarHint: "Prise de rendez-vous pour barbiers et salons",
+                    linkedinHint: "Parcours professionnel"
+                },
+                es: {
+                    title: "Bernardo Knoblauch · Enlaces",
+                    description: "Enlaces de Bernardo Knoblauch, desarrollador full stack Node.js en Río de Janeiro.",
+                    photoAlt: "Foto en blanco y negro de Bernardo Knoblauch.",
+                    language: "Idioma",
+                    theme: "Oscuro",
+                    cta: "Contactar",
+                    whatsapp: "Hola, me gustaría saber más sobre tus servicios.",
+                    profiles: "Perfiles",
+                    links: "Enlaces",
+                    portfolio: "Portafolio",
+                    portfolioHint: "Proyectos y trayectoria",
+                    beknoHint: "Para el trabajo que necesitas hecho",
+                    vamosmarcarHint: "Reservas para barberías y salones",
+                    linkedinHint: "Trayectoria profesional"
+                }
+            };
+
+            // ?lang= na URL, depois a escolha salva, depois o navegador. Fallback: inglês.
+            function detect() {
+                var param = new URLSearchParams(location.search).get("lang");
+                if (LOCALES.indexOf(param) !== -1) return param;
+                try {
+                    var saved = localStorage.getItem("locale");
+                    if (LOCALES.indexOf(saved) !== -1) return saved;
+                } catch (e) {}
+                var langs = navigator.languages || [navigator.language || ""];
+                for (var i = 0; i < langs.length; i++) {
+                    var base = String(langs[i]).slice(0, 2).toLowerCase();
+                    if (LOCALES.indexOf(base) !== -1) return base;
+                }
+                return "en";
+            }
+
+            function each(selector, fn) {
+                Array.prototype.forEach.call(document.querySelectorAll(selector), fn);
+            }
+
+            function apply(locale) {
+                var m = MESSAGES[locale];
+                m.localeName = NAMES[locale];
+                m.portfolioUrl = "https://bernardoknoblauch.com/" + locale + "/";
+                document.documentElement.lang = HTML_LANG[locale];
+                document.title = m.title;
+                each("[data-i18n]", function (el) { el.textContent = m[el.dataset.i18n]; });
+                each("[data-i18n-alt]", function (el) { el.alt = m[el.dataset.i18nAlt]; });
+                each("[data-i18n-content]", function (el) { el.content = m[el.dataset.i18nContent]; });
+                each("[data-i18n-aria-label]", function (el) { el.setAttribute("aria-label", m[el.dataset.i18nAriaLabel]); });
+                each("[data-i18n-href]", function (el) {
+                    var key = el.dataset.i18nHref;
+                    el.href = key === "whatsapp" ? WHATSAPP + encodeURIComponent(m.whatsapp) : m[key];
+                });
+                document.querySelector(".switcher .current").textContent = locale.toUpperCase();
+                each("[data-locale]", function (el) {
+                    if (el.dataset.locale === locale) el.setAttribute("aria-current", "true");
+                    else el.removeAttribute("aria-current");
+                });
+            }
+
+            apply(detect());
+
+            var switcher = document.querySelector(".switcher");
+            each("[data-locale]", function (el) {
+                el.addEventListener("click", function () {
+                    var locale = el.dataset.locale;
+                    apply(locale);
+                    try { localStorage.setItem("locale", locale); } catch (e) {}
+                    switcher.open = false;
+                    switcher.querySelector("summary").focus();
+                });
+            });
+            document.addEventListener("click", function (event) {
+                if (switcher.open && !switcher.contains(event.target)) switcher.open = false;
+            });
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape" && switcher.open) {
+                    switcher.open = false;
+                    switcher.querySelector("summary").focus();
+                }
+            });
+
+            // Tema: escuro por padrão; o claro só quando escolhido.
+            var toggle = document.querySelector(".theme");
+            function isDark() { return document.documentElement.dataset.theme !== "light"; }
+            toggle.setAttribute("aria-pressed", String(isDark()));
+            toggle.addEventListener("click", function () {
+                var next = isDark() ? "light" : "dark";
+                document.documentElement.dataset.theme = next;
+                try { localStorage.setItem("theme", next); } catch (e) {}
+                toggle.setAttribute("aria-pressed", String(next === "dark"));
+            });
+        })();
+    </script>
 </body>
 </html>
